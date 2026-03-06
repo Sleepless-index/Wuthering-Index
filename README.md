@@ -1,4 +1,4 @@
-# Resonance Index
+# Resonator Index
 
 A personal tracker for Wuthering Waves limited 5-star resonators — covering version 1.0 through the latest patch.
 
