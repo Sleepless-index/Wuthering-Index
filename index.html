@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WuWa Limited Resonator Tracker</title>
+<title>Resonator Index</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -15,11 +15,14 @@
     --fusion:#fab387; --electro:#cba6f7; --havoc:#f38ba8;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; min-height:100vh; padding:2.5rem 1.5rem 5rem; max-width:700px; margin:0 auto; }
+  body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; min-height:100vh; padding:2rem 1.2rem 5rem; max-width:700px; margin:0 auto; }
+  @media(min-width:480px){ body { padding:2.5rem 1.8rem 5rem; } }
 
   header { margin-bottom:1.5rem; }
   h1 { font-size:1.05rem; font-weight:600; color:var(--accent); letter-spacing:0.03em; margin-bottom:0.2rem; }
   .subtitle { font-size:0.75rem; color:var(--muted); font-family:'JetBrains Mono',monospace; }
+
+  /* Section spacing */
 
   /* Stats cards */
   .stats {
@@ -155,19 +158,22 @@
   .up-empty { font-size:0.75rem; color:var(--muted); font-family:'JetBrains Mono',monospace; padding:0.4rem 0.2rem; font-style:italic; }
 
   /* Version groups */
-  .version-group { margin-bottom:1.6rem; }
+  .version-group { margin-bottom:2rem; }
   .version-group.hidden { display:none; }
-  .version-heading { display:flex; align-items:center; gap:0.6rem; font-family:'JetBrains Mono',monospace; font-size:0.68rem; font-weight:500; color:var(--muted); text-transform:uppercase; letter-spacing:0.18em; margin-bottom:0.5rem; padding-bottom:0.4rem; border-bottom:1px solid var(--border); cursor:pointer; user-select:none; transition:color 0.15s; }
+  .version-heading { display:flex; align-items:center; gap:0.6rem; font-family:'JetBrains Mono',monospace; font-size:0.68rem; font-weight:500; color:var(--muted); text-transform:uppercase; letter-spacing:0.18em; margin-bottom:0.6rem; padding-bottom:0.4rem; border-bottom:1px solid var(--border); cursor:pointer; user-select:none; transition:color 0.15s; }
   .version-heading:hover { color:var(--subtext); }
   .version-heading .chevron { margin-left:auto; font-size:0.6rem; transition:transform 0.2s; }
   .version-heading.collapsed .chevron { transform:rotate(-90deg); }
+  .version-count { font-size:0.6rem; color:var(--muted); font-family:'JetBrains Mono',monospace; opacity:0.7; }
   .version-body { overflow:hidden; transition:max-height 0.25s ease; }
   .version-body.collapsed { max-height:0 !important; }
 
   /* Entries */
   .entry-wrap.el-hidden { display:none; }
-  .entry { display:flex; align-items:center; gap:0.75rem; padding:0.45rem 0.6rem; border-radius:6px; margin-bottom:0.15rem; transition:background 0.12s; }
+  .entry { display:flex; align-items:center; gap:0.75rem; padding:0.5rem 0.7rem; border-radius:6px; margin-bottom:0.2rem; transition:background 0.12s, border-color 0.12s; border:1px solid transparent; border-left-width:3px; }
   .entry:hover { background:var(--surface); }
+  .entry.is-got { background:rgba(166,227,161,0.05); border-left-color:rgba(166,227,161,0.3); }
+  .entry.is-got:hover { background:rgba(166,227,161,0.08); }
   .cb-wrap { display:flex; align-items:center; gap:0.3rem; flex-shrink:0; }
   .cb { appearance:none; -webkit-appearance:none; width:15px; height:15px; border-radius:3px; border:1.5px solid var(--muted); background:transparent; cursor:pointer; position:relative; transition:all 0.12s; flex-shrink:0; }
   .cb.cb-res:checked { background:var(--got); border-color:var(--got); }
@@ -176,7 +182,7 @@
   .cb-label { font-size:0.63rem; color:var(--muted); font-family:'JetBrains Mono',monospace; cursor:pointer; user-select:none; }
   .cb-sep { width:1px; height:12px; background:var(--border); margin:0 0.15rem; }
   .res-info { flex:1; display:flex; align-items:center; gap:0.45rem; min-width:0; }
-  .res-name { font-size:0.875rem; font-weight:500; color:var(--text); transition:color 0.12s,opacity 0.12s; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .res-name { font-size:0.875rem; font-weight:500; color:var(--text); transition:color 0.12s,opacity 0.12s; word-break:break-word; }
   .entry.is-got .res-name { color:var(--got); }
   .entry.is-skip .res-name { color:var(--muted); opacity:0.55; }
   .badge { font-size:0.63rem; font-family:'JetBrains Mono',monospace; padding:0.07rem 0.38rem; border-radius:20px; border:1px solid; white-space:nowrap; opacity:0.85; }
@@ -208,6 +214,11 @@
   .action-btn.danger:hover { border-color:var(--havoc); color:var(--havoc); }
   .action-btn.safe:hover   { border-color:var(--got);   color:var(--got); }
 
+  /* Tracker header row */
+  .tracker-header { display:flex; align-items:center; justify-content:flex-end; margin-bottom:0.75rem; }
+  .collapse-btn { font-family:'JetBrains Mono',monospace; font-size:0.63rem; color:var(--muted); background:transparent; border:1px solid var(--border); border-radius:5px; padding:0.22rem 0.65rem; cursor:pointer; transition:all 0.15s; letter-spacing:0.04em; }
+  .collapse-btn:hover { border-color:var(--subtext); color:var(--subtext); }
+
   /* Modals */
   .modal-backdrop { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:100; align-items:center; justify-content:center; padding:1.5rem; }
   .modal-backdrop.open { display:flex; }
@@ -234,31 +245,59 @@
   .modal-btn.confirm-primary:hover   { background:rgba(166,227,161,0.1); }
   .modal-msg { font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:var(--got); min-height:1rem; }
   .modal-msg.err { color:var(--havoc); }
+
+  /* Snapshot modal */
+  .snap-modal-backdrop { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:100; align-items:flex-start; justify-content:flex-start; padding:1.5rem; overflow:auto; }
+  .snap-modal-backdrop.open { display:flex; }
+  .snap-modal { background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:1.4rem 1.6rem; width:820px; min-width:600px; flex-shrink:0; }
+  .snap-modal-actions { display:flex; justify-content:flex-end; margin-bottom:1rem; }
+  .snap-hint { font-family:'JetBrains Mono',monospace; font-size:0.6rem; color:var(--muted); margin-right:auto; align-self:center; }
+  /* snap card styles */
+  .snap-header { display:flex; justify-content:flex-end; align-items:center; margin-bottom:0.9rem; padding-bottom:0.7rem; border-bottom:1px solid var(--border); }
+  .snap-stats { display:flex; gap:1.2rem; }
+  .snap-stat { text-align:right; }
+  .snap-stat-num { font-family:'JetBrains Mono',monospace; font-size:0.85rem; font-weight:600; display:block; }
+  .snap-stat-num.res { color:var(--got); }
+  .snap-stat-num.sig { color:var(--sig); }
+  .snap-stat-label { font-family:'JetBrains Mono',monospace; font-size:0.55rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; }
+  .snap-ver-grid { display:grid; grid-template-columns:1fr 1.4fr 0.85fr; gap:0; align-items:start; }
+  .snap-ver-col { padding:0 0.7rem; border-right:1px solid var(--border); }
+  .snap-ver-col:first-child { padding-left:0; }
+  .snap-ver-col:last-child  { border-right:none; padding-right:0; }
+  .snap-ver-label { font-family:'JetBrains Mono',monospace; font-size:0.56rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.15em; margin-bottom:0.45rem; white-space:nowrap; }
+  .snap-row-list { display:flex; flex-direction:column; gap:0.15rem; }
+  .snap-row { display:flex; align-items:center; gap:0.35rem; padding:0.26rem 0.4rem; border-radius:5px; border-left:2px solid transparent; }
+  .snap-row.obtained { border-left-color:var(--got); background:rgba(166,227,161,0.04); }
+  .snap-row.not-pulled { opacity:0.38; }
+  .snap-row-name { font-size:0.74rem; font-weight:500; flex:1; color:var(--text); white-space:nowrap; }
+  .snap-row.obtained .snap-row-name { color:var(--got); }
+  .snap-el-dot { width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+  .snap-sig { font-family:'JetBrains Mono',monospace; font-size:0.5rem; color:var(--sig); border:1px solid rgba(137,180,250,0.3); padding:0.02rem 0.22rem; border-radius:3px; background:rgba(137,180,250,0.08); flex-shrink:0; white-space:nowrap; }
+  .snap-seq { font-family:'JetBrains Mono',monospace; font-size:0.5rem; color:var(--accent); border:1px solid rgba(203,166,247,0.3); padding:0.02rem 0.22rem; border-radius:3px; background:rgba(203,166,247,0.08); flex-shrink:0; white-space:nowrap; }
+  @media (max-width:600px) {
+    .snap-modal { padding:1rem; border-radius:10px; }
+  }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
-
-<header>
-  <h1>Wuthering Waves — Limited Resonators</h1>
-  <div class="subtitle">v1.0 → v3.1 · resonator, signature & sequence tracker</div>
-</header>
 
 <div class="stats">
   <div class="stat-card got">
     <span class="stat-num" id="s-got">0</span>
     <span class="stat-label">obtained</span>
   </div>
-  <div class="stat-card skip">
-    <span class="stat-num" id="s-skip">0</span>
-    <span class="stat-label">not pulled</span>
-  </div>
   <div class="stat-card sig">
     <span class="stat-num" id="s-sig">0</span>
     <span class="stat-label">signatures</span>
   </div>
+  <div class="stat-card skip">
+    <span class="stat-num" id="s-skip">0</span>
+    <span class="stat-label">not pulled</span>
+  </div>
   <div class="stat-card wish">
     <span class="stat-num" id="s-wish">0</span>
-    <span class="stat-label">wishlisted</span>
+    <span class="stat-label">Priority</span>
   </div>
 </div>
 
@@ -279,13 +318,13 @@
   </div>
 </div>
 
-<div class="el-breakdown" id="el-breakdown"></div>
-
 <!-- Wishlist -->
 <div class="wishlist-section">
-  <div class="section-heading" id="wl-heading"><span>★ Pull Wishlist</span><span class="sec-chevron">▼</span></div>
+  <div class="section-heading" id="wl-heading"><span>★ Pull Priority</span><span class="sec-chevron">▼</span></div>
   <div class="section-body" id="wl-body"><div id="wl-list"></div></div>
 </div>
+
+<div class="el-breakdown" id="el-breakdown"></div>
 
 <!-- Upcoming -->
 <div class="upcoming-section">
@@ -304,12 +343,28 @@
   </div>
 </div>
 
+<div class="tracker-header">
+  <button class="collapse-btn" id="collapse-all-btn" onclick="toggleAllVersions()">collapse all</button>
+</div>
+
 <div id="tracker"></div>
 
 <div class="bottom-bar">
   <button class="action-btn safe"   onclick="openModal('export')">export</button>
   <button class="action-btn safe"   onclick="openModal('import')">import</button>
+  <button class="action-btn safe"   onclick="openSnapshot()">snapshot</button>
   <button class="action-btn danger" onclick="resetAll()">reset all</button>
+</div>
+
+<!-- Snapshot modal -->
+<div class="snap-modal-backdrop" id="modal-snapshot">
+  <div class="snap-modal">
+    <div class="snap-modal-actions">
+      <button class="modal-btn confirm-primary" id="snap-download-btn" onclick="downloadSnapshot()">↓ save as image</button>
+      <button class="modal-btn" onclick="closeSnapshot()">close</button>
+    </div>
+    <div id="snap-card-content"></div>
+  </div>
 </div>
 
 <!-- Export modal -->
@@ -496,6 +551,7 @@ function updateStats() {
   document.getElementById('pct-res').textContent = resPct+'%';
   document.getElementById('pct-sig').textContent = sigPct+'%';
   updateElBreakdown();
+  updateVersionCounts();
 }
 
 const EL_COLORS = { Spectro:'#f9e2af', Aero:'#94e2d5', Glacio:'#89dceb', Fusion:'#fab387', Electro:'#cba6f7', Havoc:'#f38ba8' };
@@ -559,9 +615,6 @@ function setSeq(id, val) {
   save();
   for (let i=0;i<=6;i++) { const b=document.getElementById(`seq-${id}-${i}`); if(b) b.classList.toggle('active', i===state[id].seq); }
   const t=document.getElementById(`seq-toggle-${id}`); if(t) t.textContent=`S${state[id].seq>0?state[id].seq:''}`;
-  // close panel after picking
-  const p=document.getElementById(`seq-panel-${id}`); if(p) p.classList.remove('open');
-  if(t) t.classList.remove('open');
 }
 function refreshSeqBtns(id) {
   for (let i=0;i<=6;i++) { const b=document.getElementById(`seq-${id}-${i}`); if(b) b.classList.toggle('active', i===state[id].seq); }
@@ -756,7 +809,40 @@ function makeCollapsible(headingId, bodyId) {
   requestAnimationFrame(()=>{ b.style.maxHeight='none'; });
 }
 
-/* ─────────────── ELEMENT FILTER ─────────────── */
+/* ─────────────── COLLAPSE ALL / EXPAND ALL ─────────────── */
+function updateCollapseBtn() {
+  const btn = document.getElementById('collapse-all-btn');
+  if (!btn) return;
+  const allCollapsed = versionElements.every(v => v.heading.classList.contains('collapsed'));
+  btn.textContent = allCollapsed ? 'expand all' : 'collapse all';
+}
+
+function toggleAllVersions() {
+  const allCollapsed = versionElements.every(v => v.heading.classList.contains('collapsed'));
+  versionElements.forEach(({ heading, body }) => {
+    if (allCollapsed) {
+      heading.classList.remove('collapsed');
+      body.classList.remove('collapsed');
+      body.style.maxHeight = 'none';
+    } else {
+      body.style.maxHeight = body.scrollHeight + 'px';
+      requestAnimationFrame(() => {
+        body.classList.add('collapsed');
+        heading.classList.add('collapsed');
+      });
+    }
+  });
+  setTimeout(updateCollapseBtn, 50);
+}
+
+function updateVersionCounts() {
+  versions.forEach(({ label, entries }, i) => {
+    const v = versionElements[i]; if (!v) return;
+    const got = entries.filter(e => state[e.id]?.res).length;
+    const countEl = v.heading.querySelector('.version-count');
+    if (countEl) countEl.textContent = `${got}/${entries.length}`;
+  });
+}
 function setFilter(el) {
   activeFilter = el;
   applyFilter();
@@ -774,17 +860,23 @@ function applyFilter() {
 }
 
 /* ─────────────── RENDER TRACKER ─────────────── */
+const versionElements = []; // track all version headings+bodies for collapse-all
+
 function render() {
   const container = document.getElementById('tracker');
+  versionElements.length = 0;
   versions.forEach(({ label, entries }) => {
     const group = document.createElement('div'); group.className='version-group';
     const heading = document.createElement('div'); heading.className='version-heading';
-    heading.innerHTML=`<span>${label}</span><span class="chevron">▼</span>`;
+    const got = entries.filter(e=>state[e.id]?.res).length;
+    heading.innerHTML=`<span>${label}</span><span class="version-count">${got}/${entries.length}</span><span class="chevron">▼</span>`;
     const body = document.createElement('div'); body.className='version-body';
+    versionElements.push({ heading, body });
     heading.addEventListener('click',()=>{
       const col=heading.classList.toggle('collapsed');
       if(col){body.style.maxHeight=body.scrollHeight+'px';requestAnimationFrame(()=>body.classList.add('collapsed'));}
       else{body.classList.remove('collapsed');body.style.maxHeight=body.scrollHeight+'px';setTimeout(()=>body.style.maxHeight='none',260);}
+      updateCollapseBtn();
     });
     entries.forEach(e=>{
       if(!state[e.id]) state[e.id]={res:false,sig:false,seq:0};
@@ -806,9 +898,9 @@ function render() {
           ${e.element?`<span class="badge el-${e.element.toLowerCase()}"><img class="badge-icon" src="icons/icon_${e.element}.webp" alt="${e.element}" onerror="this.style.display='none'">${e.element}</span>`:''}
         </div>
         <button class="wish-btn ${wled?'wishlisted':''}" id="wish-btn-${e.id}" title="Wishlist" onclick="toggleWishlist(${e.id})">★</button>
-        <button class="seq-toggle ${hasSeq?'open':''}" id="seq-toggle-${e.id}" title="Sequence">S${s.seq>0?s.seq:''}</button>
+        <button class="seq-toggle" id="seq-toggle-${e.id}" title="Sequence">S${s.seq>0?s.seq:''}</button>
       `;
-      const panel=document.createElement('div'); panel.className=`seq-panel ${hasSeq?'open':''}`; panel.id=`seq-panel-${e.id}`;
+      const panel=document.createElement('div'); panel.className=`seq-panel`; panel.id=`seq-panel-${e.id}`;
       panel.innerHTML=`<span class="seq-label">seq</span>${seqBtns}`;
       entryWrap.appendChild(row); entryWrap.appendChild(panel);
       row.querySelector(`#seq-toggle-${e.id}`).addEventListener('click',()=>{
@@ -906,8 +998,8 @@ function doImport() {
       if(wb) wb.classList.toggle('wishlisted',isWishlisted(e.id));
       updateStyle(e.id); refreshSeqBtns(e.id);
       if(state[e.id].seq>0){
-        const t=document.getElementById(`seq-toggle-${e.id}`),btn=document.getElementById(`seq-${e.id}-${state[e.id].seq}`),pp=document.getElementById(`seq-panel-${e.id}`);
-        if(t){t.textContent=`S${state[e.id].seq}`;t.classList.add('open');} if(btn) btn.classList.add('active'); if(pp) pp.classList.add('open');
+        const t=document.getElementById(`seq-toggle-${e.id}`),btn=document.getElementById(`seq-${e.id}-${state[e.id].seq}`);
+        if(t) t.textContent=`S${state[e.id].seq}`; if(btn) btn.classList.add('active');
       }
     });
     renderWishlist(); renderUpcoming(); updateStats();
@@ -935,6 +1027,67 @@ document.getElementById('up-body').style.maxHeight = '0';
 render();
 renderWishlist();
 renderUpcoming();
+
+/* ─────────────── SNAPSHOT ─────────────── */
+function openSnapshot() {
+  const EL_COLORS_MAP = { Spectro:'#f9e2af', Aero:'#94e2d5', Glacio:'#89dceb', Fusion:'#fab387', Electro:'#cba6f7', Havoc:'#f38ba8' };
+  const total = allEntries.length;
+  const got   = allEntries.filter(e => state[e.id]?.res).length;
+  const sig   = allEntries.filter(e => state[e.id]?.sig).length;
+
+  let html = `
+    <div class="snap-header">
+      <div class="snap-stats">
+        <div class="snap-stat"><span class="snap-stat-num res">${got}/${total}</span><span class="snap-stat-label">resonators</span></div>
+        <div class="snap-stat"><span class="snap-stat-num sig">${sig}/${total}</span><span class="snap-stat-label">signatures</span></div>
+      </div>
+    </div>
+    <div class="snap-ver-grid">`;
+
+  versions.forEach(({ label, entries }) => {
+    html += `<div class="snap-ver-col"><div class="snap-ver-label">${label}</div><div class="snap-row-list">`;
+    entries.forEach(e => {
+      const s = state[e.id] || { res:false, sig:false, seq:0 };
+      const cls = s.res ? 'obtained' : 'not-pulled';
+      const color = EL_COLORS_MAP[e.element] || 'var(--muted)';
+      const sigTag = s.sig ? `<span class="snap-sig">sig</span>` : '';
+      const seqTag = s.seq > 0 ? `<span class="snap-seq">S${s.seq}</span>` : '';
+      html += `<div class="snap-row ${cls}"><div class="snap-el-dot" style="background:${color}"></div><span class="snap-row-name">${e.name}</span>${sigTag}${seqTag}</div>`;
+    });
+    html += `</div></div>`;
+  });
+
+  html += `</div>`;
+  document.getElementById('snap-card-content').innerHTML = html;
+  document.getElementById('modal-snapshot').classList.add('open');
+}
+
+function closeSnapshot() {
+  document.getElementById('modal-snapshot').classList.remove('open');
+}
+
+function downloadSnapshot() {
+  const btn = document.getElementById('snap-download-btn');
+  const card = document.getElementById('snap-card-content');
+  btn.textContent = 'generating...';
+  btn.disabled = true;
+  html2canvas(card, {
+    backgroundColor: '#1e1e2e',
+    scale: 2,
+    useCORS: true,
+    logging: false,
+  }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = 'resonance-index.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    btn.textContent = '↓ save as image';
+    btn.disabled = false;
+  }).catch(() => {
+    btn.textContent = '↓ save as image';
+    btn.disabled = false;
+  });
+}
 </script>
 </body>
 </html>
