@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Resonator Index</title>
+<title>Index</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -22,9 +22,7 @@
   h1 { font-size:1.05rem; font-weight:600; color:var(--accent); letter-spacing:0.03em; margin-bottom:0.2rem; }
   .subtitle { font-size:0.75rem; color:var(--muted); font-family:'JetBrains Mono',monospace; }
 
-  /* Section spacing */
-
-
+  /* Stats cards */
   .stats {
     display:grid; grid-template-columns:1fr 1fr;
     gap:0.6rem; margin-bottom:1.2rem;
@@ -53,7 +51,7 @@
     letter-spacing:0.06em; text-transform:uppercase;
   }
 
-  
+  /* Progress — Option C side-by-side cards */
   .progress-wrap { margin-bottom:1.2rem; display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; }
   .progress-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:0.75rem 1rem; }
   .progress-card-header { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.5rem; }
@@ -66,7 +64,7 @@
   .progress-fill.res { background:var(--got); box-shadow:0 0 6px rgba(166,227,161,0.4); }
   .progress-fill.sig { background:var(--sig); box-shadow:0 0 6px rgba(137,180,250,0.4); }
 
- 
+  /* Element breakdown — Option D 2×3 cards with left accent */
   .el-breakdown { margin-bottom:1.8rem; display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; }
   .el-card { background:var(--surface); border:1px solid var(--border); border-radius:7px; padding:0.5rem 0.7rem; display:flex; align-items:center; gap:0.65rem; cursor:pointer; transition:border-color 0.15s, opacity 0.2s; }
   .el-card:hover { border-color:var(--subtext); }
@@ -80,7 +78,7 @@
   .el-card-track { width:100%; height:4px; background:var(--surface2); border-radius:99px; overflow:hidden; }
   .el-card-fill  { height:100%; border-radius:99px; transition:width 0.4s cubic-bezier(.4,0,.2,1); }
 
-  
+  /* Collapsible section shared styles */
   .section-heading {
     display:flex; align-items:center; gap:0.5rem;
     font-family:'JetBrains Mono',monospace; font-size:0.68rem; font-weight:500;
@@ -93,7 +91,7 @@
   .section-body { overflow:hidden; transition:max-height 0.25s ease; }
   .section-body.collapsed { max-height:0 !important; }
 
- 
+  /* Wishlist */
   .wishlist-section { margin-bottom:2rem; }
   .wishlist-section .section-heading { color:var(--wish); }
   .wishlist-empty { font-size:0.75rem; color:var(--muted); font-family:'JetBrains Mono',monospace; padding:0.6rem 0.2rem; font-style:italic; }
@@ -109,7 +107,7 @@
   .wl-remove:hover { color:var(--havoc); }
   .wl-drag-handle { color:var(--muted); font-size:0.7rem; cursor:grab; }
 
-  
+  /* Upcoming section */
   .upcoming-section { margin-bottom:2rem; }
   .upcoming-section .section-heading { color:var(--upcoming); }
 
@@ -207,19 +205,19 @@
   .seq-btn:hover { border-color:var(--accent); color:var(--accent); }
   .seq-btn.active { background:var(--accent); border-color:var(--accent); color:#1e1e2e; font-weight:600; }
 
-  
+  /* Bottom bar */
   .bottom-bar { display:flex; justify-content:center; gap:0.6rem; margin-top:2.5rem; flex-wrap:wrap; }
   .action-btn { font-family:'JetBrains Mono',monospace; font-size:0.68rem; letter-spacing:0.08em; padding:0.4rem 1.1rem; border:1px solid var(--border); background:transparent; color:var(--muted); cursor:pointer; border-radius:6px; transition:all 0.18s; }
   .action-btn:hover { border-color:var(--subtext); color:var(--subtext); }
   .action-btn.danger:hover { border-color:var(--havoc); color:var(--havoc); }
   .action-btn.safe:hover   { border-color:var(--got);   color:var(--got); }
 
- 
+  /* Tracker header row */
   .tracker-header { display:flex; align-items:center; justify-content:flex-end; margin-bottom:0.75rem; }
   .collapse-btn { font-family:'JetBrains Mono',monospace; font-size:0.63rem; color:var(--muted); background:transparent; border:1px solid var(--border); border-radius:5px; padding:0.22rem 0.65rem; cursor:pointer; transition:all 0.15s; letter-spacing:0.04em; }
   .collapse-btn:hover { border-color:var(--subtext); color:var(--subtext); }
 
- 
+  /* Modals */
   .modal-backdrop { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:100; align-items:center; justify-content:center; padding:1.5rem; }
   .modal-backdrop.open { display:flex; }
   .modal { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1.5rem; width:100%; max-width:480px; display:flex; flex-direction:column; gap:0.9rem; }
@@ -246,13 +244,11 @@
   .modal-msg { font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:var(--got); min-height:1rem; }
   .modal-msg.err { color:var(--havoc); }
 
-
+  /* Snapshot modal */
   .snap-modal-backdrop { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:100; align-items:flex-start; justify-content:flex-start; padding:1.5rem; overflow:auto; }
   .snap-modal-backdrop.open { display:flex; }
   .snap-modal { background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:1.4rem 1.6rem; width:820px; min-width:600px; flex-shrink:0; }
   .snap-modal-actions { display:flex; justify-content:flex-end; margin-bottom:1rem; }
-  .snap-hint { font-family:'JetBrains Mono',monospace; font-size:0.6rem; color:var(--muted); margin-right:auto; align-self:center; }
-
   .snap-header { display:flex; justify-content:flex-end; align-items:center; margin-bottom:0.9rem; padding-bottom:0.7rem; border-bottom:1px solid var(--border); }
   .snap-stats { display:flex; gap:1.2rem; }
   .snap-stat { text-align:right; }
@@ -318,7 +314,7 @@
   </div>
 </div>
 
-
+<!-- Wishlist -->
 <div class="wishlist-section">
   <div class="section-heading" id="wl-heading"><span>★ Pull Priority</span><span class="sec-chevron">▼</span></div>
   <div class="section-body" id="wl-body"><div id="wl-list"></div></div>
@@ -326,7 +322,7 @@
 
 <div class="el-breakdown" id="el-breakdown"></div>
 
-
+<!-- Upcoming -->
 <div class="upcoming-section">
   <div class="section-heading" id="up-heading"><span>◈ Upcoming / Unconfirmed</span><span class="sec-chevron">▼</span></div>
   <div class="section-body" id="up-body">
@@ -356,7 +352,7 @@
   <button class="action-btn danger" onclick="resetAll()">reset all</button>
 </div>
 
-
+<!-- Snapshot modal -->
 <div class="snap-modal-backdrop" id="modal-snapshot">
   <div class="snap-modal">
     <div class="snap-modal-actions">
@@ -367,7 +363,7 @@
   </div>
 </div>
 
-
+<!-- Export modal -->
 <div class="modal-backdrop" id="modal-export">
   <div class="modal">
     <h2 class="accent">Export Data</h2>
@@ -395,7 +391,7 @@
   </div>
 </div>
 
-
+<!-- Edit upcoming modal -->
 <div class="modal-backdrop" id="modal-edit-upcoming">
   <div class="modal">
     <h2 class="upcoming-col">Edit Upcoming</h2>
@@ -415,7 +411,7 @@
   </div>
 </div>
 
-
+<!-- Release confirmation modal -->
 <div class="modal-backdrop" id="modal-release">
   <div class="modal">
     <h2 class="upcoming-col">Mark as Released</h2>
@@ -454,7 +450,7 @@ const HARDCODED = [
     { id:10, ver:"2.0", name:"Roccia",       element:"Havoc"   },
     { id:11, ver:"2.1", name:"Phoebe",       element:"Spectro" },
     { id:12, ver:"2.1", name:"Brant",        element:"Fusion"  },
-    { id: 13, ver:"2.2", name:"Cantarella",  element:"Havoc"   },
+    { id:13, ver:"2.2", name:"Cantarella",  element:"Havoc"   },
     { id:14, ver:"2.3", name:"Zani",         element:"Spectro" },
     { id:15, ver:"2.3", name:"Ciaccona",     element:"Aero"    },
     { id:16, ver:"2.4", name:"Cartethyia",   element:"Aero"    },
@@ -471,34 +467,14 @@ const HARDCODED = [
     { id:25, ver:"3.0", name:"Mornye",       element:"Fusion"  },
     { id:26, ver:"3.1", name:"Aemeath",      element:"Fusion"  },
     { id:27, ver:"3.1", name:"Luuk Herssen", element:"Spectro" },
-    { id:28, ver:"3.1", name:"Sigrika",      element:"Aero"    },
+    { id:27, ver:"3.1", name:"Sigrika",      element:"Aero"    },
   ]},
 ];
 
 let activeFilter = "All";
 
-  
-let versions     = JSON.parse(JSON.stringify(HARDCODED));
-
-(function migrate() {
-  const oldKeys = ['wuwa-v4','wuwa-v5','wuwa-v5-wish','wuwa-v6-state','wuwa-v6-wish','wuwa-v6-upcoming','wuwa-v6-released'];
-  if (localStorage.getItem('wuwa-tracker')) return;
- 
-  const oldState = localStorage.getItem('wuwa-v6-state') || localStorage.getItem('wuwa-v5') || localStorage.getItem('wuwa-v4');
-  const oldWish  = localStorage.getItem('wuwa-v6-wish')  || localStorage.getItem('wuwa-v5-wish');
-  const oldUp    = localStorage.getItem('wuwa-v6-upcoming');
-  const oldRel   = localStorage.getItem('wuwa-v6-released');
-  if (oldState || oldWish) {
-    const blob = {
-      state:           JSON.parse(oldState || '{}'),
-      wishlist:        JSON.parse(oldWish  || '[]'),
-      upcoming:        JSON.parse(oldUp    || '[]'),
-      releasedUpcoming:JSON.parse(oldRel   || '[]'),
-    };
-    localStorage.setItem('wuwa-tracker', JSON.stringify(blob));
-  }
-  oldKeys.forEach(k => localStorage.removeItem(k));
-})();
+/* ─────────────── STATE ─────────────── */
+let versions = JSON.parse(JSON.stringify(HARDCODED));
 
 const _saved = JSON.parse(localStorage.getItem('wuwa-tracker') || '{}');
 let state            = _saved.state            || {};
@@ -506,17 +482,15 @@ let wishlist         = _saved.wishlist         || [];
 let upcoming         = _saved.upcoming         || [];
 let releasedUpcoming = _saved.releasedUpcoming || [];
 
-
 releasedUpcoming.forEach(u => {
   const lastGroup = versions[versions.length - 1];
   if (!lastGroup.entries.find(e => e.id === u.uid)) {
-    lastGroup.entries.push({ id: u.uid, ver: lastGroup.label.replace('Version ','').replace('.x','').trim() + '.x', name: u.name, element: u.element });
+    lastGroup.entries.push({ id: u.uid, ver: '?', name: u.name, element: u.element });
   }
 });
 
 let allEntries = versions.flatMap(g => g.entries);
 const byId = () => Object.fromEntries(allEntries.map(e => [e.id, e]));
-
 
 allEntries.forEach(e => {
   if (!state[e.id]) state[e.id] = { res:false, sig:false, seq:0 };
@@ -527,14 +501,13 @@ wishlist = wishlist.filter(id => {
   return (allEntries.some(e => e.id === id) || upItem) && !s?.res;
 });
 
-
 let uidCounter = Math.max(100, ...upcoming.map(u => u.uid), ...releasedUpcoming.map(u => u.uid)) + 1;
 
 function save() {
   localStorage.setItem('wuwa-tracker', JSON.stringify({ state, wishlist, upcoming, releasedUpcoming }));
 }
 
-
+/* ─────────────── STATS ─────────────── */
 function updateStats() {
   const total = allEntries.length;
   const got   = allEntries.filter(e => state[e.id]?.res).length;
@@ -609,7 +582,7 @@ function updateStyle(id) {
   row.classList.toggle('is-skip', !state[id]?.res);
 }
 
-
+/* ─────────────── SEQUENCE ─────────────── */
 function setSeq(id, val) {
   state[id].seq = state[id].seq === val ? 0 : val;
   save();
@@ -622,7 +595,7 @@ function refreshSeqBtns(id) {
   const p=document.getElementById(`seq-panel-${id}`); if(p) p.classList.remove('open');
 }
 
-
+/* ─────────────── WISHLIST ─────────────── */
 function isWishlisted(id) { return wishlist.includes(id); }
 
 function toggleWishlist(id) {
@@ -669,7 +642,6 @@ function renderWishlist() {
       ${isUp ? `<span class="wl-upcoming-tag">upcoming</span>` : ''}
       <button class="wl-remove" onclick="removeFromWishlist(${id})" title="Remove">✕</button>
     `;
-   
     item.addEventListener('dragstart', ev => { dragSrcId=id; ev.dataTransfer.effectAllowed='move'; setTimeout(()=>item.classList.add('dragging'),0); });
     item.addEventListener('dragend',   () => { item.classList.remove('dragging'); document.querySelectorAll('.wl-item').forEach(i=>i.classList.remove('drag-over')); });
     item.addEventListener('dragover',  ev => { ev.preventDefault(); document.querySelectorAll('.wl-item').forEach(i=>i.classList.remove('drag-over')); item.classList.add('drag-over'); });
@@ -679,7 +651,6 @@ function renderWishlist() {
       wishlist.splice(fi,1); wishlist.splice(ti,0,dragSrcId);
       save(); renderWishlist(); updateStats();
     });
-   
     item.addEventListener('touchstart', ev => { dragSrcId=id; item.classList.add('dragging'); }, {passive:true});
     item.addEventListener('touchmove', ev => {
       ev.preventDefault();
@@ -703,7 +674,7 @@ function renderWishlist() {
   });
 }
 
-
+/* ─────────────── UPCOMING ─────────────── */
 function addUpcoming() {
   const nameEl = document.getElementById('up-name-input');
   const elEl   = document.getElementById('up-el-select');
@@ -752,22 +723,16 @@ function confirmRelease() {
   const element = document.getElementById('rel-el').value || u.element || 'Spectro';
   const newEntry = { id: releasingUid, ver: '?', name, element };
 
- 
   const lastGroup = versions[versions.length - 1];
   lastGroup.entries.push(newEntry);
   allEntries = versions.flatMap(g => g.entries);
 
- 
   state[releasingUid] = { res:false, sig:false, seq:0 };
 
- 
   upcoming = upcoming.filter(u => u.uid !== releasingUid);
   releasedUpcoming.push({ uid: releasingUid, name, element });
 
- 
   save(); closeModal('release');
-
-
   document.getElementById('tracker').innerHTML = '';
   render(); renderWishlist(); renderUpcoming(); updateStats();
 }
@@ -797,7 +762,7 @@ function renderUpcoming() {
   });
 }
 
-
+/* ─────────────── COLLAPSIBLES ─────────────── */
 function makeCollapsible(headingId, bodyId) {
   const h = document.getElementById(headingId);
   const b = document.getElementById(bodyId);
@@ -809,7 +774,7 @@ function makeCollapsible(headingId, bodyId) {
   requestAnimationFrame(()=>{ b.style.maxHeight='none'; });
 }
 
-
+/* ─────────────── COLLAPSE ALL / EXPAND ALL ─────────────── */
 function updateCollapseBtn() {
   const btn = document.getElementById('collapse-all-btn');
   if (!btn) return;
@@ -859,8 +824,8 @@ function applyFilter() {
   });
 }
 
-
-const versionElements = []; 
+/* ─────────────── RENDER TRACKER ─────────────── */
+const versionElements = []; // track all version headings+bodies for collapse-all
 
 function render() {
   const container = document.getElementById('tracker');
@@ -923,7 +888,7 @@ function render() {
   updateStats();
 }
 
-
+/* ─────────────── RESET ─────────────── */
 function resetAll() {
   if(!confirm('Reset everything including wishlist and upcoming?')) return;
   allEntries.forEach(e=>{
@@ -939,7 +904,7 @@ function resetAll() {
   save(); renderWishlist(); renderUpcoming(); updateStats();
 }
 
-
+/* ─────────────── EXPORT / IMPORT ─────────────── */
 function openModal(type) {
   if(type==='export') {
     document.getElementById('export-text').value = JSON.stringify({ state, wishlist, upcoming, releasedUpcoming }, null, 2);
@@ -971,7 +936,6 @@ function doImport() {
     const pReleased = Array.isArray(p.releasedUpcoming)  ? p.releasedUpcoming  : [];
     if(typeof pState!=='object'||Array.isArray(pState)) throw new Error();
 
-   
     versions=JSON.parse(JSON.stringify(HARDCODED));
     pReleased.forEach(u=>{
       const last=versions[versions.length-1];
@@ -1014,13 +978,11 @@ function doImport() {
   document.getElementById(`modal-${t}`).addEventListener('click',function(e){ if(e.target===this) closeModal(t); });
 });
 
-
 document.getElementById('up-name-input').addEventListener('keydown', e=>{ if(e.key==='Enter') addUpcoming(); });
 
-
+/* ─────────────── INIT ─────────────── */
 makeCollapsible('wl-heading','wl-body');
 makeCollapsible('up-heading','up-body');
-
 document.getElementById('up-heading').classList.add('collapsed');
 document.getElementById('up-body').classList.add('collapsed');
 document.getElementById('up-body').style.maxHeight = '0';
@@ -1028,7 +990,7 @@ render();
 renderWishlist();
 renderUpcoming();
 
-
+/* ─────────────── SNAPSHOT ─────────────── */
 function openSnapshot() {
   const EL_COLORS_MAP = { Spectro:'#f9e2af', Aero:'#94e2d5', Glacio:'#89dceb', Fusion:'#fab387', Electro:'#cba6f7', Havoc:'#f38ba8' };
   const total = allEntries.length;
