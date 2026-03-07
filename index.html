@@ -293,6 +293,20 @@
   .snap-ver-count { color:var(--subtext); letter-spacing:0; font-size:0.56rem; }
   .snap-row-list { display:grid; grid-template-columns:repeat(6, 110px); gap:0.4rem; }
 
+  /* list view */
+  .snap-ver-grid-list { display:grid; grid-template-columns:repeat(var(--snap-cols,4),auto); gap:0; align-items:stretch; width:100%; }
+  .snap-ver-col-list { padding:0 0.7rem; border-right:1px solid rgba(255,255,255,0.07); display:flex; flex-direction:column; min-width:0; }
+  .snap-ver-col-list:first-child { padding-left:0; }
+  .snap-ver-col-list:last-child  { border-right:none; padding-right:0; }
+  .snap-row-list-old { display:flex; flex-direction:column; gap:0.15rem; }
+  .snap-row { display:flex; align-items:center; gap:0.35rem; padding:0.26rem 0.4rem; border-radius:5px; border-left:2px solid transparent; }
+  .snap-row.obtained { border-left-color:var(--got); background:rgba(166,227,161,0.04); }
+  .snap-row.not-pulled { opacity:0.38; }
+  .snap-row-name { font-size:0.74rem; font-weight:500; flex:1; color:var(--text); white-space:nowrap; }
+  .snap-row.obtained .snap-row-name { color:var(--got); }
+  .snap-head-icon { width:18px; height:18px; border-radius:50%; object-fit:cover; flex-shrink:0; }
+  .snap-seq { font-family:'JetBrains Mono',monospace; font-size:0.62rem; color:var(--accent); border:1px solid rgba(203,166,247,0.3); padding:0.05rem 0.28rem; border-radius:3px; background:rgba(203,166,247,0.08); flex-shrink:0; white-space:nowrap; }
+
   /* portrait card */
   .snap-card {
     width:110px; height:160px;
@@ -425,10 +439,7 @@
 <div class="snap-modal-backdrop" id="modal-snapshot" onclick="closeSnapshot()">
   <div class="snap-modal" onclick="event.stopPropagation()">
     <div class="snap-modal-actions">
-      <div class="snap-view-toggle">
-        <button class="snap-view-btn active" id="snap-view-regions" onclick="setSnapView('regions')">list</button>
-        <button class="snap-view-btn" id="snap-view-gallery" onclick="setSnapView('gallery')">gallery</button>
-      </div>
+
       <button class="modal-btn confirm-primary" id="snap-copy-btn" onclick="copySnapshot()">⎘ copy + save</button>
       <button class="modal-btn" onclick="closeSnapshot()">close</button>
     </div>
@@ -1134,7 +1145,7 @@ renderPriority();
 renderUpcoming();
 
 /* ─────────────── SNAPSHOT ─────────────── */
-let snapView = 'regions';
+let snapView = 'gallery';
 
 function setSnapView(v) {
   snapView = v;
@@ -1145,7 +1156,7 @@ function setSnapView(v) {
 
 function openSnapshot() {
   document.getElementById('modal-snapshot').classList.add('open');
-  renderSnapContent();
+  renderSnapGallery();
 }
 
 function renderSnapContent() {
@@ -1201,14 +1212,21 @@ function renderSnapRegions() {
         <div class="snap-stat"><span class="snap-stat-num sig">${sig}/${total}</span><span class="snap-stat-label">sig weapons</span></div>
       </div>
     </div>
-    <div class="snap-ver-grid">`;
+    <div class="snap-ver-grid-list" style="--snap-cols:${versions.length}">`;
 
   versions.forEach(({ label, entries }) => {
     const verGot = entries.filter(e => state[e.id]?.res).length;
-    html += `<div class="snap-ver-col">
-      <div class="snap-ver-label">${label} <span class="snap-ver-count">${verGot}/${entries.length}</span></div>
-      <div class="snap-row-list">${entries.map(makeSnapCard).join('')}</div>
-    </div>`;
+    html += `<div class="snap-ver-col-list"><div class="snap-ver-label">${label} <span class="snap-ver-count">${verGot}/${entries.length}</span></div><div class="snap-row-list-old">`;
+    entries.forEach(e => {
+      const s = state[e.id] || { res:false, seq:0, wep:0 };
+      const cls = s.res ? 'obtained' : 'not-pulled';
+      const seqPart = s.res ? `S${s.seq}` : (s.seq > 0 ? `S${s.seq}` : '');
+      const wepPart = s.res ? `R${s.wep}` : (s.wep > 0 ? `R${s.wep}` : '');
+      const comboTag = (seqPart || wepPart) ? `<span class="snap-seq">${seqPart}${wepPart}</span>` : '';
+      const headIcon = `<img class="snap-head-icon" src="icons/head_${e.name.replace(/[^a-zA-Z0-9]/g,'_')}.webp" alt="" onerror="this.style.display='none'">`;
+      html += `<div class="snap-row ${cls}">${headIcon}<span class="snap-row-name">${e.name}</span>${comboTag}</div>`;
+    });
+    html += `</div></div>`;
   });
 
   html += `</div>`;
