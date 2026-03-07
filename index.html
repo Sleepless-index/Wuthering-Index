@@ -1256,28 +1256,41 @@ function copySnapshot() {
   btn.textContent = 'generating...';
   btn.disabled = true;
 
-  // Temporarily remove scroll constraint so html2canvas sees full height
-  const prevMaxHeight = card.style.maxHeight;
-  const prevOverflow  = card.style.overflow;
-  card.style.maxHeight = 'none';
-  card.style.overflow  = 'visible';
+  // Clone the card and place it off-screen at full natural size
+  const clone = card.cloneNode(true);
+  clone.style.cssText = `
+    position: fixed;
+    top: 0; left: -99999px;
+    max-height: none;
+    overflow: visible;
+    width: ${card.scrollWidth}px;
+    border-radius: 12px;
+    background: #1c1c2e;
+    padding: 1.4rem 1.6rem;
+    border: 1px solid #2e2e48;
+    z-index: -1;
+  `;
+  document.body.appendChild(clone);
 
-  // Let the DOM reflow before capturing
   requestAnimationFrame(() => {
-    html2canvas(card, {
-      backgroundColor: null, scale: 2, useCORS: true, logging: false,
-      width: card.scrollWidth, height: card.scrollHeight,
-      windowWidth: card.scrollWidth, windowHeight: card.scrollHeight
+    html2canvas(clone, {
+      backgroundColor: '#1c1c2e',
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      width: clone.scrollWidth,
+      height: clone.scrollHeight,
+      windowWidth: clone.scrollWidth + 9999,
+      windowHeight: clone.scrollHeight + 9999,
+      x: 0, y: 0,
+      scrollX: 0, scrollY: 0
     }).then(canvas => {
-      // Restore scroll
-      card.style.maxHeight = prevMaxHeight;
-      card.style.overflow  = prevOverflow;
+      document.body.removeChild(clone);
       canvas.toBlob(blob => {
         navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]).then(() => {
           btn.textContent = '✓ copied!';
           setTimeout(() => { btn.textContent = '⎘ copy + save'; btn.disabled = false; }, 2000);
         }).catch(() => {
-          // Fallback — trigger download instead
           const a = document.createElement('a');
           a.href = canvas.toDataURL('image/png');
           a.download = 'wuwa-snapshot.png';
@@ -1287,8 +1300,7 @@ function copySnapshot() {
         });
       }, 'image/png');
     }).catch(() => {
-      card.style.maxHeight = prevMaxHeight;
-      card.style.overflow  = prevOverflow;
+      document.body.removeChild(clone);
       btn.textContent = '⎘ copy + save';
       btn.disabled = false;
     });
